@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>IT Governance Portal – All in One</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 20px;
+}
+h1, h2 {
+  color: #0f172a;
+}
+nav button {
+  margin-right: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  background: #e2e8f0;
+}
+nav button.active {
+  background: #2563eb;
+  color: white;
+}
+.card {
+  background: white;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap: 16px;
+}
+.status-approved { color: green; font-weight: bold; }
+.status-pending { color: orange; font-weight: bold; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+pre {
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 6px;
+}
+button.approve {
+  background: green;
+  color: white;
+  padding: 6px 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>💻 IT Governance Portal</h1>
+
+<nav>
+  <button onclick="show('dashboard')" class="active">Dashboard</button>
+  <button onclick="show('policies')">Policies</button>
+  <button onclick="show('sops')">SOPs</button>
+  <button onclick="show('flowcharts')">Flowcharts</button>
+  <button onclick="show('approvals')">Approvals</button>
+</nav>
+
+<hr/>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="view">
+  <h2>Management Dashboard</h2>
+  <div class="grid">
+    <div class="card"><h3>Policies Approved</h3><p>8 / 8</p></div>
+    <div class="card"><h3>Active SOPs</h3><p>12</p></div>
+    <div class="card"><h3>Flowcharts</h3><p>6</p></div>
+    <div class="card"><h3>Open Incidents</h3><p style="color:red">1</p></div>
+  </div>
+
+  <div class="card">
+    <h3>ISO 27001 Readiness</h3>
+    ✅ Clause 5–10 Documented<br/>
+    ✅ Annex A Mapping Completed<br/>
+    ⚠️ SoA Pending Approval
+  </div>
+</div>
+
+<!-- POLICIES -->
+<div id="policies" class="view" style="display:none">
+  <h2>IT Policies</h2>
+  <div class="card">
+    <pre>
+IT Governance Policy
+- Management commitment
+- Risk management
+- Annual review
+
+Information Security Policy
+- Password change every 90 days
+- No unauthorized software
+- HR enforcement
+    </pre>
+  </div>
+</div>
+
+<!-- SOPs -->
+<div id="sops" class="view" style="display:none">
+  <h2>Standard Operating Procedures (SOP)</h2>
+  <div class="card">
+    <pre>
+User Access Management SOP
+1. Request from department
+2. Approval
+3. IT Setup
+4. Access log update
+
+Incident Response SOP
+1. Detect
+2. Classify
+3. Resolve
+4. Report
+    </pre>
+  </div>
+</div>
+
+<!-- FLOWCHARTS -->
+<div id="flowcharts" class="view" style="display:none">
+  <h2>Flowcharts</h2>
+  <div class="card">
+    <pre>
+User Access Flow
+[Request] -> [Approval] -> [IT Setup] -> [Log]
+
+Incident Response Flow
+[Detect] -> [Classify] -> [Resolve] -> [Report]
+    </pre>
+  </div>
+</div>
+
+<!-- APPROVALS -->
+<div id="approvals" class="view" style="display:none">
+  <h2>Approval Workflow</h2>
+  <div class="card">
+    <table>
+      <tr>
+        <th>Document</th>
+        <th>Owner</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+      <tr>
+        <td>Statement of Applicability (SoA)</td>
+        <td>Management</td>
+        <td id="soaStatus" class="status-pending">Pending</td>
+        <td>
+          <button class="approve" onclick="approve()">Approve</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Information Security Policy</td>
+        <td>IT Manager</td>
+        <td class="status-approved">Approved</td>
+        <td>—</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.view').forEach(v => v.style.display='none');
+  document.getElementById(id).style.display='block';
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function approve() {
+  document.getElementById('soaStatus').innerText = 'Approved';
+  document.getElementById('soaStatus').className = 'status-approved';
+}
+</script>
+
+</body>
+</html>

@@ -1,66 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="my">
 <head>
 <meta charset="UTF-8" />
-<title>IT Governance Portal – All in One</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT Governance Portal & SOP</title>
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f4f6f8;
-  margin: 0;
-  padding: 20px;
-}
-h1, h2 {
-  color: #0f172a;
-}
-nav button {
-  margin-right: 10px;
-  padding: 10px 14px;
-  cursor: pointer;
-  border: none;
-  border-radius: 6px;
-  background: #e2e8f0;
-}
-nav button.active {
-  background: #2563eb;
-  color: white;
-}
-.card {
-  background: white;
-  padding: 16px;
-  border-radius: 10px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-  gap: 16px;
-}
-.status-approved { color: green; font-weight: bold; }
-.status-pending { color: orange; font-weight: bold; }
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-th, td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-}
-pre {
-  background: #f8fafc;
-  padding: 12px;
-  border-radius: 6px;
-}
-button.approve {
-  background: green;
-  color: white;
-  padding: 6px 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 6px;
-}
+  :root {
+    --primary: #2563eb;
+    --dark: #0f172a;
+    --bg: #f4f6f8;
+    --white: #ffffff;
+  }
+  body {
+    font-family: Arial, "Myanmar Text", Padauk, sans-serif;
+    background: var(--bg);
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+  h1, h2, h3 { color: var(--dark); }
+  
+  /* Navigation */
+  nav {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  nav button {
+    padding: 10px 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background: #e2e8f0;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  nav button.active {
+    background: var(--primary);
+    color: white;
+  }
+
+  /* Layout Components */
+  .view { display: none; }
+  .view.active { display: block; }
+  
+  .card {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  
+  /* SOP Specific Styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+  }
+  th, td {
+    border: 1px solid #cbd5e1;
+    padding: 12px;
+    text-align: left;
+  }
+  th { background: #f8fafc; }
+  .box {
+    background: #f1f5f9;
+    border-left: 4px solid var(--primary);
+    padding: 15px;
+    margin: 15px 0;
+  }
+  
+  /* Status Colors */
+  .status-approved { color: #10b981; font-weight: bold; }
+  .status-pending { color: #f59e0b; font-weight: bold; }
+  
+  button.approve {
+    background: #10b981;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+  pre {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+  }
 </style>
 </head>
 
@@ -68,37 +103,64 @@ button.approve {
 
 <h1>💻 IT Governance Portal</h1>
 
-<nav>
+<nav id="main-nav">
   <button onclick="show('dashboard')" class="active">Dashboard</button>
-  <button onclick="show('policies')">Policies</button>
-  <button onclick="show('sops')">SOPs</button>
+  <button onclick="show('sops')">IT SOP (Myanmar)</button>
+  <button onclick="show('policies')">Global Policies</button>
   <button onclick="show('flowcharts')">Flowcharts</button>
   <button onclick="show('approvals')">Approvals</button>
 </nav>
 
-<hr/>
+<hr style="border: 0; height: 1px; background: #cbd5e1; margin-bottom: 20px;"/>
 
-<!-- DASHBOARD -->
-<div id="dashboard" class="view">
+<div id="dashboard" class="view active">
   <h2>Management Dashboard</h2>
   <div class="grid">
     <div class="card"><h3>Policies Approved</h3><p>8 / 8</p></div>
     <div class="card"><h3>Active SOPs</h3><p>12</p></div>
-    <div class="card"><h3>Flowcharts</h3><p>6</p></div>
+    <div class="card"><h3>Compliance Score</h3><p style="color:green">94%</p></div>
     <div class="card"><h3>Open Incidents</h3><p style="color:red">1</p></div>
   </div>
 
   <div class="card">
     <h3>ISO 27001 Readiness</h3>
-    ✅ Clause 5–10 Documented<br/>
-    ✅ Annex A Mapping Completed<br/>
-    ⚠️ SoA Pending Approval
+    <p>✅ Clause 5–10 Documented</p>
+    <p>✅ Annex A Mapping Completed</p>
+    <p id="soaWarning">⚠️ SoA Pending Approval</p>
   </div>
 </div>
 
-<!-- POLICIES -->
-<div id="policies" class="view" style="display:none">
-  <h2>IT Policies</h2>
+<div id="sops" class="view">
+  <div class="card">
+    <h2>Company‑Grade IT Department SOP</h2>
+    
+    <h3>1. Document Control</h3>
+    <table>
+      <tr><th>Document Title</th><td>IT Department SOP</td></tr>
+      <tr><th>Version</th><td>1.0</td></tr>
+      <tr><th>Effective Date</th><td>2026‑04‑05</td></tr>
+    </table>
+
+    <h3>2. Purpose</h3>
+    <p>ဤ SOP သည် IT Department ၏ လုပ်ငန်းများကို စနစ်တကျ၊ လုံခြုံမှုရှိစွာ၊ စံနှုန်းတူ ဆောင်ရွက်နိုင်ရန် ရည်ရွယ်သည်။</p>
+
+    <div class="box">
+      <h3>5.4 Software Policy</h3>
+      <p>Licensed Software များသာ အသုံးပြုခွင့်ရှိသည်။ Unauthorized Software မသုံးရ။</p>
+      <small><i>Note: အသုံးပြုသူများအားလုံး မူပိုင်ခွင့်ဥပဒေကို လိုက်နာရမည်။</i></small>
+    </div>
+
+    <h3>6. Daily Operations</h3>
+    <ul>
+      <li>User Support & Helpdesk</li>
+      <li>Hardware & Software Management</li>
+      <li>Network & System Monitoring</li>
+    </ul>
+  </div>
+</div>
+
+<div id="policies" class="view">
+  <h2>IT Policies (Draft)</h2>
   <div class="card">
     <pre>
 IT Governance Policy
@@ -114,42 +176,17 @@ Information Security Policy
   </div>
 </div>
 
-<!-- SOPs -->
-<div id="sops" class="view" style="display:none">
-  <h2>Standard Operating Procedures (SOP)</h2>
+<div id="flowcharts" class="view">
+  <h2>Operational Flowcharts</h2>
   <div class="card">
-    <pre>
-User Access Management SOP
-1. Request from department
-2. Approval
-3. IT Setup
-4. Access log update
-
-Incident Response SOP
-1. Detect
-2. Classify
-3. Resolve
-4. Report
-    </pre>
+    <h3>User Access Flow</h3>
+    <pre>[Request] -> [Dept Approval] -> [IT Setup] -> [Log Update]</pre>
+    <h3>Incident Response Flow</h3>
+    <pre>[Detect] -> [Classify] -> [Resolve] -> [Report]</pre>
   </div>
 </div>
 
-<!-- FLOWCHARTS -->
-<div id="flowcharts" class="view" style="display:none">
-  <h2>Flowcharts</h2>
-  <div class="card">
-    <pre>
-User Access Flow
-[Request] -> [Approval] -> [IT Setup] -> [Log]
-
-Incident Response Flow
-[Detect] -> [Classify] -> [Resolve] -> [Report]
-    </pre>
-  </div>
-</div>
-
-<!-- APPROVALS -->
-<div id="approvals" class="view" style="display:none">
+<div id="approvals" class="view">
   <h2>Approval Workflow</h2>
   <div class="card">
     <table>
@@ -164,14 +201,8 @@ Incident Response Flow
         <td>Management</td>
         <td id="soaStatus" class="status-pending">Pending</td>
         <td>
-          <button class="approve" onclick="approve()">Approve</button>
+          <button id="approveBtn" class="approve" onclick="approve()">Approve</button>
         </td>
-      </tr>
-      <tr>
-        <td>Information Security Policy</td>
-        <td>IT Manager</td>
-        <td class="status-approved">Approved</td>
-        <td>—</td>
       </tr>
     </table>
   </div>
@@ -179,131 +210,25 @@ Incident Response Flow
 
 <script>
 function show(id) {
-  document.querySelectorAll('.view').forEach(v => v.style.display='none');
-  document.getElementById(id).style.display='block';
+  // Hide all views
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  // Show target view
+  document.getElementById(id).classList.add('active');
+  
+  // Update Nav buttons
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  const activeBtn = Array.from(document.querySelectorAll('nav button')).find(btn => btn.innerText.toLowerCase().includes(id.substring(0,3)));
+  if(activeBtn) activeBtn.classList.add('active');
 }
 
 function approve() {
   document.getElementById('soaStatus').innerText = 'Approved';
   document.getElementById('soaStatus').className = 'status-approved';
+  document.getElementById('soaWarning').innerText = '✅ SoA Approved';
+  document.getElementById('approveBtn').style.display = 'none';
+  alert('Document Approved Successfully! ✅');
 }
 </script>
-
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="my">
-<head>
-<meta charset="UTF-8">
-<title>Company‑Grade IT Department SOP</title>
-<style>
-body{font-family:Arial,"Myanmar Text",Padauk,sans-serif;line-height:1.7;margin:40px;color:#222}
-h1,h2,h3{color:#0b5394}
-h1{border-bottom:3px solid #0b5394;padding-bottom:10px}
-h2{border-bottom:1px solid #ccc;padding-bottom:5px;margin-top:40px}
-h3{margin-top:25px}
-table{width:100%;border-collapse:collapse;margin:15px 0}
-th,td{border:1px solid #999;padding:8px;text-align:left}
-th{background:#e6f0ff}
-ul{margin-left:20px}
-.box{background:#f9f9f9;border:1px solid #ccc;padding:15px;margin:15px 0}
-.footer{margin-top:60px;font-size:13px;color:#555}
-</style>
-</head>
-<body>
-
-<h1>Company‑Grade IT Department Standard Operating Procedure (SOP)</h1>
-
-<h2>1. Document Control</h2>
-<table>
-<tr><th>Document Title</th><td>IT Department SOP</td></tr>
-<tr><th>Version</th><td>1.0</td></tr>
-<tr><th>Effective Date</th><td>2026‑04‑05</td></tr>
-<tr><th>Prepared By</th><td>IT Department</td></tr>
-<tr><th>Approved By</th><td>Management</td></tr>
-<tr><th>Next Review</th><td>6 Months</td></tr>
-</table>
-
-<h2>2. Purpose</h2>
-<p>ဤ SOP သည် IT Department ၏ လုပ်ငန်းများကို စနစ်တကျ၊ လုံခြုံမှုရှိစွာ၊ စံနှုန်းတူ ဆောင်ရွက်နိုင်ရန် ရည်ရွယ်သည်။</p>
-
-<h2>3. Scope</h2>
-<p>Hardware, Software, Network, Security, User Support, Reporting, Backup, Policy & Compliance အားလုံးအတွက် အကျုံးဝင်သည်။</p>
-
-<h2>4. Organization Structure & Responsibility</h2>
-<table>
-<tr><th>Role</th><th>Responsibility</th></tr>
-<tr><td>IT Manager</td><td>Policy Approval, Security Oversight, Management Reporting</td></tr>
-<tr><td>Assistant Manager</td><td>Daily Operation Control, Team Supervision</td></tr>
-<tr><td>Supervisor</td><td>Task Assignment, Quality Control</td></tr>
-<tr><td>IT Leader</td><td>Technician Supervision</td></tr>
-<tr><td>Technician</td><td>Operational Execution</td></tr>
-</table>
-
-<h2>5. IT Department Policies</h2>
-<div class="box">
-<h3>5.1 IT Governance Policy</h3>
-<p>IT Policy နှင့် SOP များအားလုံးကို IT Manager မှ အတည်ပြုပြီးမှ အသုံးပြုရမည်။</p>
-
-<h3>5.2 User Support Policy</h3>
-<p>IT Support ကို Ticket / Email / Phone ဖြင့်သာ လက်ခံရမည်။</p>
-
-<h3>5.3 Hardware & Asset Policy</h3>
-<p>Hardware Asset များကို Asset Register ဖြင့် အပြည့်အစုံ ထိန်းချုပ်ရမည်။</p>
-
-<h3>5.4 Software Policy</h3>
-<p>Licensed Software များသာ အသုံးပြုခွင့်ရှိသည်။ Unauthorized Software မသုံးရ။ (လိုင်စင်နဲ့ မွဲကုန်လိမ့်မယ် ဘယ်သူမှ လိုင်စင်ဗားရှင်းမသုံးဘူး သူခိုးဗားရှင်းပဲထည့်)</p>
-
-<h3>5.5 Network & Internet Policy</h3>
-<p>Unauthorized Network Device မတပ်ဆင်ရ။ Network Change များကို Approval လိုအပ်သည်။</p>
-
-<h3>5.6 Information Security Policy</h3>
-<p>Password Policy, Account Sharing မပြုရ။ Security Incident များကို ချက်ချင်း Report တင်ရမည်။</p>
-
-<h3>5.7 Backup & DR Policy</h3>
-<p>Critical Data များကို Daily Backup ပြုလုပ်ပြီး Restore Test ကို လစဉ် လုပ်ရမည်။</p>
-
-<h3>5.8 Reporting Policy</h3>
-<p>Daily / Weekly / Monthly IT Report မတင်ပါက Non‑Compliance အဖြစ် သတ်မှတ်မည်။</p>
-
-<h3>5.9 SOP Compliance Policy</h3>
-<p>SOP မလိုက်နာပါက Disciplinary Action ခံရနိုင်သည်။</p>
-</div>
-
-<h2>6. Daily Operations SOP</h2>
-<ul>
-<li>User Support & Helpdesk</li>
-<li>Hardware & Software Management</li>
-<li>Network & System Monitoring</li>
-<li>Security & Incident Handling</li>
-</ul>
-
-<h2>7. Change & Incident Management</h2>
-<p>System Change များကို Approval + Rollback Plan ဖြင့်သာ ဆောင်ရွက်ရမည်။ Incident များကို Severity အလိုက် Escalation ပြုလုပ်ရမည်။</p>
-
-<h2>8. Reporting & Review</h2>
-<ul>
-<li>Daily Report → IT Leader</li>
-<li>Weekly Report → Assistant Manager</li>
-<li>Monthly Report → Management</li>
-</ul>
-
-<h2>9. Training & Awareness</h2>
-<p>IT SOP, Security Awareness Training ကို Staff များအား အနည်းဆုံး နှစ်ละครั้ง ပေးရမည်။</p>
-
-<h2>10. Approval & Acknowledgement</h2>
-<table>
-<tr><th>Name</th><th>Position</th><th>Signature</th><th>Date</th></tr>
-<tr><td></td><td>IT Manager</td><td></td><td></td></tr>
-<tr><td></td><td>Management</td><td></td><td></td></tr>
-</table>
-
-<div class="footer">
-<p>✅ This SOP is Company‑Grade, Audit‑Ready and Enforceable Document.</p>
-</div>
 
 </body>
 </html>

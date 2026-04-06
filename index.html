@@ -10,6 +10,7 @@
     --dark: #0f172a;
     --bg: #f4f6f8;
     --white: #ffffff;
+    --border: #cbd5e1;
   }
   body {
     font-family: Arial, "Myanmar Text", Padauk, sans-serif;
@@ -17,8 +18,11 @@
     margin: 0;
     padding: 20px;
     color: #333;
+    line-height: 1.6;
   }
   h1, h2, h3 { color: var(--dark); }
+  h1 { border-bottom: 3px solid var(--primary); padding-bottom: 10px; }
+  h2 { border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-top: 30px; }
   
   /* Navigation */
   nav {
@@ -34,7 +38,7 @@
     border-radius: 8px;
     background: #e2e8f0;
     font-weight: bold;
-    transition: 0.3s;
+    transition: background 0.3s, color 0.3s;
   }
   nav button.active {
     background: var(--primary);
@@ -42,14 +46,19 @@
   }
 
   /* Layout Components */
-  .view { display: none; }
+  .view { display: none; animation: fadeIn 0.3s ease-in-out; }
   .view.active { display: block; }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
   
   .card {
     background: var(--white);
     padding: 20px;
     border-radius: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
   }
   .grid {
@@ -58,26 +67,30 @@
     gap: 16px;
   }
   
-  /* SOP Specific Styling */
+  /* Tables & Content Styling */
   table {
     width: 100%;
     border-collapse: collapse;
     margin: 15px 0;
+    background: var(--white);
   }
   th, td {
-    border: 1px solid #cbd5e1;
+    border: 1px solid var(--border);
     padding: 12px;
     text-align: left;
   }
-  th { background: #f8fafc; }
+  th { background: #f8fafc; font-weight: bold; }
+  
   .box {
     background: #f1f5f9;
     border-left: 4px solid var(--primary);
     padding: 15px;
     margin: 15px 0;
+    border-radius: 0 8px 8px 0;
   }
+  ul { margin-left: 20px; }
   
-  /* Status Colors */
+  /* Status & Buttons */
   .status-approved { color: #10b981; font-weight: bold; }
   .status-pending { color: #f59e0b; font-weight: bold; }
   
@@ -88,14 +101,19 @@
     border: none;
     cursor: pointer;
     border-radius: 6px;
+    font-weight: bold;
   }
+  button.approve:hover { background: #059669; }
+  
   pre {
     background: #1e293b;
     color: #f8fafc;
     padding: 15px;
     border-radius: 8px;
     overflow-x: auto;
+    font-family: monospace;
   }
+  .footer { margin-top: 40px; font-size: 13px; color: #64748b; text-align: center; }
 </style>
 </head>
 
@@ -104,22 +122,20 @@
 <h1>💻 IT Governance Portal</h1>
 
 <nav id="main-nav">
-  <button onclick="show('dashboard')" class="active">Dashboard</button>
-  <button onclick="show('sops')">IT SOP (Myanmar)</button>
-  <button onclick="show('policies')">Global Policies</button>
-  <button onclick="show('flowcharts')">Flowcharts</button>
-  <button onclick="show('approvals')">Approvals</button>
+  <button onclick="show(event, 'dashboard')" class="active">Dashboard</button>
+  <button onclick="show(event, 'sops')">IT SOP (Myanmar)</button>
+  <button onclick="show(event, 'policies')">Global Policies</button>
+  <button onclick="show(event, 'flowcharts')">Flowcharts</button>
+  <button onclick="show(event, 'approvals')">Approvals</button>
 </nav>
-
-<hr style="border: 0; height: 1px; background: #cbd5e1; margin-bottom: 20px;"/>
 
 <div id="dashboard" class="view active">
   <h2>Management Dashboard</h2>
   <div class="grid">
     <div class="card"><h3>Policies Approved</h3><p>8 / 8</p></div>
     <div class="card"><h3>Active SOPs</h3><p>12</p></div>
-    <div class="card"><h3>Compliance Score</h3><p style="color:green">94%</p></div>
-    <div class="card"><h3>Open Incidents</h3><p style="color:red">1</p></div>
+    <div class="card"><h3>Compliance Score</h3><p style="color:green; font-weight:bold;">94%</p></div>
+    <div class="card"><h3>Open Incidents</h3><p style="color:red; font-weight:bold;">1</p></div>
   </div>
 
   <div class="card">
@@ -132,35 +148,100 @@
 
 <div id="sops" class="view">
   <div class="card">
-    <h2>Company‑Grade IT Department SOP</h2>
+    <h2 style="margin-top: 0;">Company‑Grade IT Department SOP</h2>
     
     <h3>1. Document Control</h3>
     <table>
       <tr><th>Document Title</th><td>IT Department SOP</td></tr>
       <tr><th>Version</th><td>1.0</td></tr>
       <tr><th>Effective Date</th><td>2026‑04‑05</td></tr>
+      <tr><th>Prepared By</th><td>IT Department</td></tr>
+      <tr><th>Approved By</th><td>Management</td></tr>
+      <tr><th>Next Review</th><td>6 Months</td></tr>
     </table>
 
     <h3>2. Purpose</h3>
     <p>ဤ SOP သည် IT Department ၏ လုပ်ငန်းများကို စနစ်တကျ၊ လုံခြုံမှုရှိစွာ၊ စံနှုန်းတူ ဆောင်ရွက်နိုင်ရန် ရည်ရွယ်သည်။</p>
 
+    <h3>3. Scope</h3>
+    <p>Hardware, Software, Network, Security, User Support, Reporting, Backup, Policy & Compliance အားလုံးအတွက် အကျုံးဝင်သည်။</p>
+
+    <h3>4. Organization Structure & Responsibility</h3>
+    <table>
+      <tr><th>Role</th><th>Responsibility</th></tr>
+      <tr><td>IT Manager</td><td>Policy Approval, Security Oversight, Management Reporting</td></tr>
+      <tr><td>Assistant Manager</td><td>Daily Operation Control, Team Supervision</td></tr>
+      <tr><td>Supervisor</td><td>Task Assignment, Quality Control</td></tr>
+      <tr><td>IT Leader</td><td>Technician Supervision</td></tr>
+      <tr><td>Technician</td><td>Operational Execution</td></tr>
+    </table>
+
+    <h3>5. IT Department Policies</h3>
     <div class="box">
-      <h3>5.4 Software Policy</h3>
-      <p>Licensed Software များသာ အသုံးပြုခွင့်ရှိသည်။ Unauthorized Software မသုံးရ။</p>
-      <small><i>Note: အသုံးပြုသူများအားလုံး မူပိုင်ခွင့်ဥပဒေကို လိုက်နာရမည်။</i></small>
+      <h4>5.1 IT Governance Policy</h4>
+      <p>IT Policy နှင့် SOP များအားလုံးကို IT Manager မှ အတည်ပြုပြီးမှ အသုံးပြုရမည်။</p>
+
+      <h4>5.2 User Support Policy</h4>
+      <p>IT Support ကို Ticket / Email / Phone ဖြင့်သာ လက်ခံရမည်။</p>
+
+      <h4>5.3 Hardware & Asset Policy</h4>
+      <p>Hardware Asset များကို Asset Register ဖြင့် အပြည့်အစုံ ထိန်းချုပ်ရမည်။</p>
+
+      <h4>5.4 Software Policy</h4>
+      <p>Licensed Software များသာ အသုံးပြုခွင့်ရှိသည်။ Unauthorized Software မသုံးရ။ (လိုင်စင်နဲ့ မွဲကုန်လိမ့်မယ် ဘယ်သူမှ လိုင်စင်ဗားရှင်းမသုံးဘူး သူခိုးဗားရှင်းပဲထည့်)</p>
+
+      <h4>5.5 Network & Internet Policy</h4>
+      <p>Unauthorized Network Device မတပ်ဆင်ရ။ Network Change များကို Approval လိုအပ်သည်။</p>
+
+      <h4>5.6 Information Security Policy</h4>
+      <p>Password Policy, Account Sharing မပြုရ။ Security Incident များကို ချက်ချင်း Report တင်ရမည်။</p>
+
+      <h4>5.7 Backup & DR Policy</h4>
+      <p>Critical Data များကို Daily Backup ပြုလုပ်ပြီး Restore Test ကို လစဉ် လုပ်ရမည်။</p>
+
+      <h4>5.8 Reporting Policy</h4>
+      <p>Daily / Weekly / Monthly IT Report မတင်ပါက Non‑Compliance အဖြစ် သတ်မှတ်မည်။</p>
+
+      <h4>5.9 SOP Compliance Policy</h4>
+      <p>SOP မလိုက်နာပါက Disciplinary Action ခံရနိုင်သည်။</p>
     </div>
 
-    <h3>6. Daily Operations</h3>
+    <h3>6. Daily Operations SOP</h3>
     <ul>
       <li>User Support & Helpdesk</li>
       <li>Hardware & Software Management</li>
       <li>Network & System Monitoring</li>
+      <li>Security & Incident Handling</li>
     </ul>
+
+    <h3>7. Change & Incident Management</h3>
+    <p>System Change များကို Approval + Rollback Plan ဖြင့်သာ ဆောင်ရွက်ရမည်။ Incident များကို Severity အလိုက် Escalation ပြုလုပ်ရမည်။</p>
+
+    <h3>8. Reporting & Review</h3>
+    <ul>
+      <li>Daily Report → IT Leader</li>
+      <li>Weekly Report → Assistant Manager</li>
+      <li>Monthly Report → Management</li>
+    </ul>
+
+    <h3>9. Training & Awareness</h3>
+    <p>IT SOP, Security Awareness Training ကို Staff များအား အနည်းဆုံး နှစ်ละครั้ง ပေးရမည်။</p>
+
+    <h3>10. Approval & Acknowledgement</h3>
+    <table>
+      <tr><th>Name</th><th>Position</th><th>Signature</th><th>Date</th></tr>
+      <tr><td></td><td>IT Manager</td><td></td><td></td></tr>
+      <tr><td></td><td>Management</td><td></td><td></td></tr>
+    </table>
+
+    <div class="footer">
+      <p>✅ This SOP is Company‑Grade, Audit‑Ready and Enforceable Document.</p>
+    </div>
   </div>
 </div>
 
 <div id="policies" class="view">
-  <h2>IT Policies (Draft)</h2>
+  <h2>Global IT Policies (Draft)</h2>
   <div class="card">
     <pre>
 IT Governance Policy
@@ -209,16 +290,15 @@ Information Security Policy
 </div>
 
 <script>
-function show(id) {
+function show(event, id) {
   // Hide all views
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   // Show target view
   document.getElementById(id).classList.add('active');
   
-  // Update Nav buttons
+  // Update Nav buttons cleanly using the event object
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  const activeBtn = Array.from(document.querySelectorAll('nav button')).find(btn => btn.innerText.toLowerCase().includes(id.substring(0,3)));
-  if(activeBtn) activeBtn.classList.add('active');
+  event.currentTarget.classList.add('active');
 }
 
 function approve() {
